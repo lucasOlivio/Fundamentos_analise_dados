@@ -7,7 +7,7 @@ class TestMath(object):
         prime_generator = PrimeGenerator()
         assert_raises(TypeError, prime_generator.generate_primes, None)
         assert_raises(TypeError, prime_generator.generate_primes, 98.6)
-        assert_equal(prime_generator.generate_primes(20), [False, False, True, 
+        assert_equal(prime_generator.generate_primes(1000), [False, False, True, 
                                                            True, False, True, 
                                                            False, True, False, 
                                                            False, False, True, 

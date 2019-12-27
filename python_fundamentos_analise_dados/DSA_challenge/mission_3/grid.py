@@ -1,6 +1,6 @@
 from Node import Node
 
-adjacent_squares = [(0, -1), (0, 1), (-1, 0), (1, 0), (-1, -1), (1, 1), (-1, 1), (1, -1)]
+adjacent_squares = [(0, -1), (0, 1), (-1, 0), (1, 0)]
 
 def a_star(maze, start, end):
     """ Returns a list of tuples as a path from the given start to the given end in the given maze """
@@ -21,6 +21,7 @@ def a_star(maze, start, end):
     
     # Loop until you find the end
     while len(open_list) > 0:
+
         # Get the current node
         current_index = 0
         current_node = open_list[current_index]
@@ -49,7 +50,7 @@ def a_star(maze, start, end):
             # Get node position
             node_position = (current_node.position[0] + new_position[0]
                              , current_node.position[1] + new_position[1])
-            
+
             # Make sure within range
             if node_position[0] > (len(maze) - 1) \
             or node_position[0] < 0 \
@@ -69,25 +70,26 @@ def a_star(maze, start, end):
         
         # Loop through children
         for child in children:
-            
+            closed = False
+            listed = False
+
             # Child is on the closed list
             for closed_child in closed_list:
-                if child == closed_child:
-                    continue
-            
-            # Create the f, g, and g values
-            child.g = current_node.g + 1
-            child.h = ((child.position[0] - end_node.position[0]) ** 2) \
-                    + ((child.position[1] - end_node.position[1]) ** 2)
-            child.f = child.g + child.h
-            
-            # Child is already in the open list
-            for open_node in open_list:
-                if child == open_node and child.g > open_node.g:
-                    continue
-            
-            # Add the child to the open list
-            open_list.append(child)
+                closed = child == closed_child if not closed else closed
+
+            if not closed:
+                # Create the f, g, and g values
+                child.g = current_node.g + 1
+                child.h = ((child.position[0] - end_node.position[0]) ** 2) \
+                        + ((child.position[1] - end_node.position[1]) ** 2)
+                child.f = child.g + child.h
+                
+                # Child is already in the open list
+                for open_node in open_list:
+                    listed = (child == open_node and child.g > open_node.g) if not listed else listed
+                
+                # Add the child to the open list
+                open_list.append(child)
 
 class Grid(object):
 
@@ -99,4 +101,4 @@ class Grid(object):
         x = len(matrix) - 1
         y = len(matrix[-1]) - 1
         
-        return a_star(matrix, [0, 0], [x, y])
+        return a_star(matrix, (0, 0), (x, y))

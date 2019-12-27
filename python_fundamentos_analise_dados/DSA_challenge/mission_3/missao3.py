@@ -1,5 +1,5 @@
 from nose.tools import assert_equal
-from grid import Grid
+
 
 class TestGridPath(object):
 
